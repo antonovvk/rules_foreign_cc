@@ -1,0 +1,20 @@
+load("@rules_foreign_cc//foreign_cc:boost_build.bzl", "boost_build")
+
+boost_build(
+    name = "boost_headers",
+    lib_source = "@boost//:all",
+    out_headers_only = True,
+    user_options = ["--with-headers"],
+    bootstrap_script = select({
+        ":is_windows": "bootstrap.bat",
+        "//conditions:default": "bootstrap.sh",
+    }),
+    visibility = ["//visibility:public"],
+)
+
+config_setting(
+    name = "is_windows",
+    values = {
+        "platforms": "//:windows_platform",
+    },
+)

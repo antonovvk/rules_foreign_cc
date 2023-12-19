@@ -29,7 +29,7 @@ def _create_configure_script(configureParameters):
         "##copy_dir_contents_to_dir## $$EXT_BUILD_ROOT$$/{}/. .".format(root),
         "chmod -R +w .",
         "##enable_tracing##",
-        "./bootstrap.sh {}".format(" ".join(ctx.attr.bootstrap_options)),
+        "./{} {}".format(ctx.attr.bootstrap_script, " ".join(ctx.attr.bootstrap_options)),
         "./b2 install {} --prefix=.".format(" ".join(user_options)),
         "##disable_tracing##",
     ]
@@ -38,6 +38,11 @@ def _attrs():
     attrs = dict(CC_EXTERNAL_RULE_ATTRIBUTES)
     attrs.pop("targets")
     attrs.update({
+        "bootstrap_script": attr.string(
+            doc = "Bootstrap script to run: defaults to bootstrap.sh, specify bootstrap.bat for Windows build",
+            mandatory = False,
+            default = "bootstrap.sh",
+        ),
         "bootstrap_options": attr.string_list(
             doc = "any additional flags to pass to bootstrap.sh",
             mandatory = False,
