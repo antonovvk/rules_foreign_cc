@@ -414,7 +414,7 @@ def cc_external_rule_impl(ctx, attrs):
     target_root = paths.dirname(installdir_copy.file.dirname)
 
     data_dependencies = ctx.attr.data + ctx.attr.build_data + ctx.attr.toolchains
-    for tool in attrs.tools_data:
+    for tool in attrs.build_data:
         if tool.target:
             data_dependencies.append(tool.target)
 
@@ -845,7 +845,7 @@ def _define_inputs(attrs):
     tools = []
     tools_files = []
     input_files = []
-    for tool in attrs.tools_data:
+    for tool in attrs.build_data:
         tools.append(tool.path)
         if tool.target:
             for file_list in tool.target.files.to_list():
